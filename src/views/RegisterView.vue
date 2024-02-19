@@ -5,7 +5,7 @@
     </div>
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit="register">
-          {{ error }}
+          <div v-if="error">{{ displayErrors(error) }}</div>
             <div>
             <label for="Name" class="block text-sm font-medium leading-6 text-gray-900">Full Name</label>
             <div class="mt-2">
@@ -58,7 +58,7 @@ import { ref } from 'vue';
 
 const router = useRoute();
 
-let error = ref('');
+let error = ref(null);
 
   const user = {
     name: '',
@@ -78,6 +78,16 @@ let error = ref('');
       error.value = err.response.data.errors;
     });
   }
+
+  function displayErrors(errorObject){
+      if (errorObject && errorObject.email) {
+        // Assuming the errorObject has a property named 'email'
+        return errorObject.email.map(error => `${error}`).join('\n');
+      } else{
+        return 'Password must be 8 characters long and contain at least one number, one letter and a symbol. \n' +
+        'Password confirmation must match the password.';
+      }
+    };
   </script>
   
   <style scoped>
