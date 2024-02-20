@@ -52,11 +52,11 @@
 </template>
   
   <script setup>
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import store from '@/store';
 import { ref } from 'vue';
 
-const router = useRoute();
+const router = useRouter();
 
 let error = ref(null);
 

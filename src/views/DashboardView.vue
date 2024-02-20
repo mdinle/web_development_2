@@ -90,16 +90,12 @@
     </div>
   </template>
   
-  <script setup>
+  <script>
   import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
   import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-  
-  const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  }
+  import { useStore } from 'vuex';
+  import { ref, onMounted, toRaw } from 'vue';
+
   const navigation = [
     { name: 'Dashboard', href: '#', current: true },
     { name: 'Team', href: '#', current: false },
@@ -112,4 +108,33 @@
     { name: 'Settings', href: '#' },
     { name: 'Sign out', href: '#' },
   ]
+  export default {
+    components: {
+      Disclosure,
+      DisclosureButton,
+      DisclosurePanel,
+      Menu,
+      MenuButton,
+      MenuItem,
+      MenuItems,
+      Bars3Icon,
+      BellIcon,
+      XMarkIcon,
+    },
+    setup() {
+      const store = useStore();
+      const user = ref({});
+
+      onMounted(() => {
+      user.value = store.state.user.data;
+      console.log('User data:', toRaw(user.value));
+    });
+
+      return {
+        user,
+        navigation,
+        userNavigation,
+      }
+    },
+  }
   </script>

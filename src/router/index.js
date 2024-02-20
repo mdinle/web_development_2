@@ -41,9 +41,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if(to.meta.requiresAuth && !store.state.user.token) {
-    next({name: 'login'})
+    next({name: 'login'});
   } else if(to.meta.isGuest && store.state.user.token) {
-    next({name: 'dashboard'})
+    next({name: 'dashboard'});
   } else {
     next()
   }

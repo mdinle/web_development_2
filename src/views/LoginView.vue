@@ -48,11 +48,11 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import store from '@/store';
 import { ref } from 'vue';
 
-const router = useRoute();
+const router = useRouter();
 
 let error = ref(null);
 
@@ -61,19 +61,16 @@ let error = ref(null);
     password: '',
   };
 
-  function login(ev){
-    ev.preventDefault();
-    store
-    .dispatch('login', user)
+  function login(ev) {
+  ev.preventDefault();
+  store.dispatch('login', user)
     .then(() => {
-      router.push({
-        name: 'dashboard',
-      })
+      router.push({ name: 'dashboard' });
     })
     .catch((err) => {
       error.value = err.response.data.error;
     });
-  }
+}
 </script>
 <style scoped>
 </style>
