@@ -12,6 +12,7 @@ const store = createStore({
         register({ commit }, user) {
             return axiosClient.post('/register', user)
                 .then(({    data }) => {
+                    console.log('return data', data);
                     commit('setUser', data);
                     return data;
                 })
@@ -30,7 +31,6 @@ const store = createStore({
             state.user.data = userData.user;
             state.user.token = userData.token;
             sessionStorage.setItem('TOKEN', userData.token);
-            console.log('User token:', userData.token);
         }
     },
 });

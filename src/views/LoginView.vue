@@ -68,7 +68,7 @@ let error = ref(null);
       router.push({ name: 'dashboard' });
     })
     .catch((err) => {
-      error.value = err.response.data.errorMessage;
+      error.value = err.response.data.error;
     });
 }
 </script>

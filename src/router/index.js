@@ -3,6 +3,7 @@ import Login from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import AuthenticationVue from '../components/Authentication.vue'
+import ProductsView from '../views/ProductsView.vue'
 import store from '../store'
 
 const routes = [
@@ -32,6 +33,13 @@ const routes = [
     name: 'dashboard',
     component: DashboardView
   },
+
+  { 
+  path: '/products',
+  meta: { requiresAuth: true },  
+  name: 'products', 
+  component: ProductsView
+ },
 ];
 
 const router = createRouter({

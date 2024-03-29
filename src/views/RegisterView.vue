@@ -5,11 +5,18 @@
     </div>
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit="register">
-          <div v-if="error">{{ displayErrors(error) }}</div>
+          <div v-if="error" class=" bg-red-500 rounded-lg text-sm text-white py-2 px-4 flex items-center justify-center">
+              {{ error }}
+            <span @click="error = ''" class=" w-8 h-8 ml-4 hover:bg-[rgba(0,0,0,0.2)] flex items-center justify-center rounded-full transition-colors">
+              <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </span>
+          </div>
             <div>
-            <label for="Name" class="block text-sm font-medium leading-6 text-gray-900">Full Name</label>
+            <label for="Username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
             <div class="mt-2">
-              <input id="name" name="name" type="text" autocomplete="name" required="" v-model="user.name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <input id="username" name="username" type="text" autocomplete="username" required="" v-model="user.username" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 
@@ -61,7 +68,7 @@ const router = useRouter();
 let error = ref(null);
 
   const user = {
-    name: '',
+    username: '',
     email: '',
     password: '',
     password_confirmation: ''
@@ -75,19 +82,10 @@ let error = ref(null);
       router.push({name: 'dashboard'});
     })
     .catch((err) => {
-      error.value = err.response.data.errors;
+      console.log(err.response);
+      error.value = err.response.data.error;
     });
   }
-
-  function displayErrors(errorObject){
-      if (errorObject && errorObject.email) {
-        // Assuming the errorObject has a property named 'email'
-        return errorObject.email.map(error => `${error}`).join('\n');
-      } else{
-        return 'Password must be 8 characters long and contain at least one number, one letter and a symbol. \n' +
-        'Password confirmation must match the password.';
-      }
-    };
   </script>
   
   <style scoped>
