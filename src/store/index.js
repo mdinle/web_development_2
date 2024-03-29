@@ -1,7 +1,7 @@
 import {createStore} from 'vuex';
 import axiosClient from '../axios';
 
-const store = createStore({
+const store = createStore({ 
     state: {
         user: {
             data: {},
