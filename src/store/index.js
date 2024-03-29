@@ -30,7 +30,7 @@ const store = createStore({
             state.user.data = userData.user;
             state.user.token = userData.token;
             sessionStorage.setItem('TOKEN', userData.token);
-            console.log('User data set:', userData.user);
+            console.log('User token:', userData.token);
         }
     },
 });
