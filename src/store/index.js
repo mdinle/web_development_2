@@ -31,6 +31,7 @@ const store = createStore({
             state.user.data = userData.user;
             state.user.token = userData.token;
             sessionStorage.setItem('TOKEN', userData.token);
+            sessionStorage.setItem('USER', JSON.stringify(userData.user.username));
         }
     },
 });
