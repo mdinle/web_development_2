@@ -1,5 +1,5 @@
 <template>
-    <h1 class="text-2xl font-semibold text-gray-900">Stock</h1>
+    <h1 class="text-2xl font-semibold text-gray-900">{{ pageTitle }}</h1>
     <!-- Table -->
     <div class="w-full gap-3 md:flex">
         <div class="w-full mt-5 p-5 border-gray-200 border rounded-xl shadow-lg">
@@ -75,12 +75,12 @@
 import { defineProps } from 'vue';
 
 const props = defineProps({
+    pageTitle: String,
     formTitle: String,
     fields: Array
 });
 
 const onSubmit = () => {
-  // Handle form submission logic here
   console.log('Form submitted');
 };
 </script>

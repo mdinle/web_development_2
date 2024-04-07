@@ -1,26 +1,14 @@
 <template>
-    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white text-black">
-        <Header />
-        <NavigationBar />
-        <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
-            <div class="relative p-10 overflow-x-auto sm:rounded-lg">
-
-                <Table title="Categories" innerTitle="Manage Categories"
+    <Table title="Categories" innerTitle="Manage Categories"
                     :headers="[{ name: 'Id', key: 'id' }, { name: 'Category', key: 'name' }, { name: 'Action', key: 'action' }]"
                     :data="data" />
 
                 <addbutton addString="Add Category" />
-
-            </div>
-        </div>
-    </div>
 </template>
 <script setup>
 import { onMounted, computed, ref } from 'vue';
 import Table from '@/components/Manage/Table.vue';
-import Header from '@/components/Dashboard/Header.vue';
 import addbutton from '@/components/Manage/addbutton.vue';
-import NavigationBar from '@/components/Dashboard/NavigationBar.vue';
 import CategoriesService from '@/service/CategoriesServices';
 
 const error = ref(null);

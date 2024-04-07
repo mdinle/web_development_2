@@ -1,28 +1,14 @@
 <template>
-    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white text-black">
-        <Header />
-        <NavigationBar />
-        <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
-            <div class="relative p-10 overflow-x-auto sm:rounded-lg">
-
-                <Table title="Users" innerTitle="Manage Users"
+    <Table title="Users" innerTitle="Manage Users"
                     :headers="[{ name: 'Id', key: 'id' }, { name: 'Username', key: 'username' }, { name: 'Email', key: 'email' }, { name: 'Status', key: 'status' }, { name: 'created at', key: 'created_at' }, { name: 'Action', key: 'action' }]"
                     :data="data" />
 
-                <!-- <RouterLink> -->
-                    <addbutton addString="Add User" />
-                <!-- </RouterLink> -->
-
-            </div>
-        </div>
-    </div>
+                    <addbutton addString="Add User" to="create-user" />
 </template>
 <script setup>
-import { computed, onMounted, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Table from '@/components/Manage/Table.vue';
 import addbutton from '@/components/Manage/addbutton.vue';
-import Header from '@/components/Dashboard/Header.vue';
-import NavigationBar from '@/components/Dashboard/NavigationBar.vue';
 import UserServices from '@/service/UserServices';
 
 const error = ref(null);

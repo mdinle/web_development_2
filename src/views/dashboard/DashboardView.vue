@@ -5,6 +5,8 @@
         <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
             <div class="relative p-10 overflow-x-auto sm:rounded-lg">
 
+                <breadcrumb/>
+
                 <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
                 <Stats />
                 <Table title="" innerTitle="Latest Products"
@@ -37,4 +39,5 @@ import Table from '@/components/Manage/Table.vue';
 import Stats from '@/components/Manage/Stats.vue';
 import Header from '@/components/Dashboard/Header.vue';
 import NavigationBar from '@/components/Dashboard/NavigationBar.vue';
+import breadcrumb from '@/components/Manage/breadcrumb.vue';
 </script>

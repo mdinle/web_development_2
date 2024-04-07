@@ -1,26 +1,14 @@
 <template>
-    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white text-black">
-        <Header />
-        <NavigationBar />
-        <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
-            <div class="relative p-10 overflow-x-auto sm:rounded-lg">
-
-                <Table title="Brands" innerTitle="Manage Brands"
+    <Table title="Brands" innerTitle="Manage Brands"
                     :headers="[{ name: 'Id', key: 'id' }, { name: 'Brand', key: 'name' }, {name: 'Description', key: 'description'}, { name: 'Action', key: 'action' }]"
                     :data="data" />
 
                 <addbutton addString="Add Brand" />
-
-            </div>
-        </div>
-    </div>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import Table from '@/components/Manage/Table.vue';
-import Header from '@/components/Dashboard/Header.vue';
 import addbutton from '@/components/Manage/addbutton.vue';
-import NavigationBar from '@/components/Dashboard/NavigationBar.vue';
 import BrandsServices from '@/service/BrandsService';
 
 const error = ref(null);
