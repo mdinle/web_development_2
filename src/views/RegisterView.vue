@@ -87,7 +87,3 @@ let error = ref(null);
     });
   }
   </script>
-  
-  <style scoped>
-  </style>
-  

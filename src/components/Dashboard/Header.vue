@@ -9,7 +9,7 @@
         class="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
         src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg"
       />
-      <span class="hidden md:block">USERNAME</span>
+      <span class="hidden md:block">{{userName}}</span>
     </div>
     <div
       class="flex justify-between items-center h-14 bg-blue-800 header-right"
@@ -19,8 +19,8 @@
           <div class="block w-px h-6 mx-3 bg-gray-400"></div>
         </li>
         <li>
-          <a
-            href="/user/logout"
+          <button
+            @click="logoutUser"
             class="flex items-center mr-4 hover:text-blue-100"
           >
             <span class="inline-flex mr-1">
@@ -40,11 +40,27 @@
               </svg>
             </span>
             Logout
-          </a>
+          </button>
         </li>
       </ul>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import store from '@/store';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const userName = ref(null);
+
+onMounted(() => {
+  userName.value = store.state.user.data.username;
+});
+
+function logoutUser() {
+  store.dispatch('logout');
+  router.push({ name: 'login' });
+}
+</script>

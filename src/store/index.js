@@ -4,7 +4,9 @@ import axiosClient from '../axios';
 const store = createStore({ 
     state: {
         user: {
-            data: {},
+            data: {
+                username: sessionStorage.getItem('USERNAME'),
+            },
             token: sessionStorage.getItem('TOKEN'),
         }
     },
@@ -25,13 +27,24 @@ const store = createStore({
                     return data;
                 })
           },
+
+          logout({ commit }) {
+            commit('resetUser');
+            sessionStorage.removeItem('TOKEN');
+            sessionStorage.removeItem('USERNAME');
+        },
     },
     mutations: {
         setUser(state, userData) {
             state.user.data = userData.user;
             state.user.token = userData.token;
             sessionStorage.setItem('TOKEN', userData.token);
-            sessionStorage.setItem('USER', JSON.stringify(userData.user.username));
+            sessionStorage.setItem('USERNAME', userData.user.username);
+        },
+
+        resetUser(state) {
+            state.user.data = {};
+            state.user.token = null;
         }
     },
 });
