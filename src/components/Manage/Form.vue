@@ -72,7 +72,7 @@
     <!-- Table -->
 </template>
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
     pageTitle: String,
@@ -80,7 +80,23 @@ const props = defineProps({
     fields: Array
 });
 
+const emit = defineEmits(['form-submit', "validation-error"]);
+
 const onSubmit = () => {
-  console.log('Form submitted');
+    const formData = {};
+    let isValid = true;
+
+    props.fields.forEach(field => {
+        if (field.value.trim() === '') {
+            emit('validation-error', `The field ${field.label} cannot be empty.`);
+            isValid = false;
+        } else {
+            formData[field.id] = field.value;
+        }
+    });
+
+    if (isValid) {
+        emit('form-submit', formData);
+    }
 };
 </script>

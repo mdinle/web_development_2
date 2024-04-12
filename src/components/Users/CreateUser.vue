@@ -1,16 +1,26 @@
 <template>
-    <Form  formTitle="Create User"
-                :fields="formFields" />
+  <success-error-popup v-if="visible" :message="popupMessage" :type="type" @click="closeBanner()" />
+  <Form @form-submit="FormSubmit" @validation-error="errorValidation" formTitle="Create User" :fields="formFields" />
 </template>
 <script setup>
+import { ref } from 'vue';
 import Form from '@/components/Manage/Form.vue';
+import SuccessErrorPopup from '@/components/Manage/succeserrorpopup.vue';
+import UserServices from '@/service/UserServices';
+import router from '@/router';
+
+const { createUser } = UserServices();
+const visible = ref(false);
+const popupMessage = ref('');
+const type = ref('');
 
 const formFields = [
   {
-    id: 'name',
+    id: 'username',
     type: 'text',
-    label: 'Name',
-    placeholder: 'Enter Name',
+    label: 'Username',
+    placeholder: 'Enter Username',
+    required: true,
     value: ''
   },
   {
@@ -18,6 +28,7 @@ const formFields = [
     type: 'email',
     label: 'Email',
     placeholder: 'Enter Email',
+    required: true,
     value: ''
   },
   {
@@ -25,7 +36,40 @@ const formFields = [
     type: 'password',
     label: 'Password',
     placeholder: 'Enter Password',
+    required: true,
     value: ''
   }
 ];
+
+const FormSubmit = (formData) => {
+  createUser(formData)
+    .then(() => {
+      successValidation();
+    }).catch((error) => {
+      errorValidation(error.response.data.error);
+    });
+};
+
+const successValidation = () => {
+  popupMessage.value = 'User created successfully';
+  type.value = 'success';
+  visible.value = true;
+  setInterval(() => {
+    visible.value = false;
+    location.reload();
+  }, 2000);
+};
+
+const errorValidation = (message) => {
+  popupMessage.value = message;
+  type.value = 'error';
+  visible.value = true;
+  setInterval(() => {
+    visible.value = false;
+  }, 3000);
+};
+
+const closeBanner = () => {
+  visible.value = false;
+};
 </script>

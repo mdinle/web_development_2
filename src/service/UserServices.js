@@ -13,9 +13,29 @@ const UserServices = (error) => {
     }
   };
 
+  const createUser = async (user) => {
+    try {
+      const response = await axiosClient.post('/create-user', user);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  const deleteUser = async (id) => {
+    try {
+      const response = await axiosClient.delete(`/delete-user?userId=${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   return {
     users,
     getUsers,
+    createUser,
+    deleteUser,
   };
 };
 
