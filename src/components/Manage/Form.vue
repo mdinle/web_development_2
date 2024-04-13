@@ -11,6 +11,7 @@
                             <label :for="field.id" class="block text-sm font-medium leading-6 text-gray-900">{{
                                 field.label }}</label>
                             <select :name="field.id" :id="field.id" v-model="field.value"
+                                :data-original="field.original"
                                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <option value="" disabled selected>{{ field.placeholder }}</option>
                                 <option v-for="option in field.options" :key="option.value" :value="option.value">
@@ -22,6 +23,7 @@
                             <label :for="field.id" class="block text-sm font-medium leading-6 text-gray-900">{{
                                 field.label }}</label>
                             <input :type="field.type" :name="field.id" :id="field.id" v-model="field.value"
+                                :data-original="field.original"
                                 class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
                     </template>
@@ -85,15 +87,30 @@ const emit = defineEmits(['form-submit', "validation-error"]);
 const onSubmit = () => {
     const formData = {};
     let isValid = true;
+    let allFieldsOriginal = true;
 
     props.fields.forEach(field => {
-        if (field.value.trim() === '') {
-            emit('validation-error', `The field ${field.label} cannot be empty.`);
-            isValid = false;
-        } else {
-            formData[field.id] = field.value;
+        if (field.id !== 'category_id') {
+            if (field.value.toString().trim() === '') {
+                console.log(field);
+                emit('validation-error', `The field ${field.label} cannot be empty.`);
+                isValid = false;
+                return;
+            }
+            if (field.value !== field.original) {
+                allFieldsOriginal = false;
+                // formData[field.id] = field.value;
+            }
         }
+        formData[field.id] = field.value;
     });
+
+    if (allFieldsOriginal) {
+        if (isValid) {
+            emit('validation-error', 'No changes made.');
+            isValid = false;
+        }
+    }
 
     if (isValid) {
         emit('form-submit', formData);

@@ -13,6 +13,15 @@ const UserServices = (error) => {
     }
   };
 
+  const getUser = async (id) => {
+    try {
+      const response = await axiosClient.get(`/user?userId=${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   const createUser = async (user) => {
     try {
       const response = await axiosClient.post('/create-user', user);
@@ -31,11 +40,22 @@ const UserServices = (error) => {
     }
   }
 
+  const updateUser = async (user) => {
+    try {
+      const response = await axiosClient.put('/update-user', user);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   return {
     users,
     getUsers,
     createUser,
     deleteUser,
+    getUser,
+    updateUser,
   };
 };
 

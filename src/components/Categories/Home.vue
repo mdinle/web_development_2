@@ -1,20 +1,26 @@
 <template>
+    <success-error-popup v-if="visible" :message="popupMessage" :type="type" @click="closeBanner()"/>
     <Table title="Categories" innerTitle="Manage Categories"
-                    :headers="[{ name: 'Id', key: 'id' }, { name: 'Category', key: 'name' }, { name: 'Action', key: 'action' }]"
-                    :data="data" />
+        :headers="[{ name: 'Id', key: 'id' }, { name: 'Category', key: 'name' }, { name: 'Action', key: 'action' }]"
+        :data="data" />
 
-                <addbutton addString="Add Category" />
+    <addbutton addString="Add Category" to="create-category" />
 </template>
 <script setup>
 import { onMounted, computed, ref } from 'vue';
 import Table from '@/components/Manage/Table.vue';
 import addbutton from '@/components/Manage/addbutton.vue';
 import CategoriesService from '@/service/CategoriesServices';
+import SuccessErrorPopup from '@/components/Manage/succeserrorpopup.vue';
+import router from '@/router';
 
 const error = ref(null);
+const popupMessage = ref('');
+const type = ref('');
+const visible = ref(false);
 const { categories, getCategories } = CategoriesService(error);
 
-const data = computed(() =>{
+const data = computed(() => {
     return categories.value.map((category) => {
         return {
             id: category.category_id,
@@ -29,7 +35,39 @@ const data = computed(() =>{
 
 onMounted(async () => {
     await getCategories();
-    console.log(categories.value);
 });
+
+const editMethod = (id) => {
+    router.push({ name: 'edit-category', params: { id } });
+};
+
+const deleteMethod = async (id) => {
+    await CategoriesService().deleteCategory(id)
+        .then(() => {
+            successValidation();
+        })
+        .catch((error) => {
+            errorValidation(error.response.data.error);
+        });
+};
+
+const successValidation = () => {
+    popupMessage.value = 'User deleted successfully';
+    type.value = 'success';
+    visible.value = true;
+    setTimeout(() => {
+        visible.value = false;
+        location.reload();
+    }, 3000);
+};
+
+const errorValidation = (message) => {
+    popupMessage.value = message;
+    type.value = 'error';
+    visible.value = true;
+    setInterval(() => {
+        visible.value = false;
+    }, 3000);
+};
 
 </script>

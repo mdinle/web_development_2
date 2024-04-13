@@ -48,19 +48,16 @@
 </template>
 
 <script setup>
-import store from '@/store';
+import { useAuthStore } from '@/store/AuthStore';
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
-const router = useRouter();
 const userName = ref(null);
 
 onMounted(() => {
-  userName.value = store.state.user.data.username;
+  userName.value = useAuthStore().user.username;
 });
 
 function logoutUser() {
-  store.dispatch('logout');
-  router.push({ name: 'login' });
+  useAuthStore().logout();
 }
 </script>

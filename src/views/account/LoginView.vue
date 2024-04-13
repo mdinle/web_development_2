@@ -49,8 +49,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import store from '@/store';
 import { ref } from 'vue';
+import { useAuthStore } from '@/store/AuthStore';
 
 const router = useRouter();
 
@@ -61,11 +61,11 @@ let error = ref(null);
     password: '',
   };
 
-  function login(ev) {
+function login(ev) {
   ev.preventDefault();
-  store.dispatch('login', user)
+  useAuthStore().login(user)
     .then(() => {
-      router.push({ name: 'dashboard' });
+      // router.push({ name: 'dashboard' });
     })
     .catch((err) => {
       error.value = err.response.data.error;

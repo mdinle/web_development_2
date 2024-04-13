@@ -60,7 +60,7 @@
   
   <script setup>
 import { useRouter } from 'vue-router';
-import store from '@/store';
+import { useAuthStore } from '@/store/AuthStore';
 import { ref } from 'vue';
 
 const router = useRouter();
@@ -76,14 +76,12 @@ let error = ref(null);
 
   function register(ev){
     ev.preventDefault();
-    store
-    .dispatch('register', user)
-    .then(() => {
-      router.push({name: 'dashboard'});
-    })
-    .catch((err) => {
-      console.log(err.response);
-      error.value = err.response.data.error;
-    });
+    useAuthStore().register(user)
+      .then(() => {
+        // router.push({ name: 'dashboard' });
+      })
+      .catch((err) => {
+        error.value = err.response.data.error;
+      });
   }
   </script>

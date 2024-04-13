@@ -4,67 +4,46 @@
   </template>
   <script setup>
   import { onMounted, ref } from 'vue';
+  import { useCategoriesStore } from '@/store/CategoriesStore';
   import Form from '@/components/Manage/Form.vue';
   import SuccessErrorPopup from '@/components/Manage/succeserrorpopup.vue';
-  import UserServices from '@/service/UserServices';
   import router from '@/router';
   
-  const { getUser, updateUser } = UserServices();
+  
   const visible = ref(false);
   const popupMessage = ref('');
   const type = ref('');
-  const userId = ref(router.currentRoute.value.params.id);
+  const categoryId = ref(router.currentRoute.value.params.id);
   
   
   const formFields = ref([
     {
-        id: 'id',
+        id: 'category_id',
         type: 'hidden',
         value: '',
         original: ''
     },
     {
-        id: 'username',
+        id: 'category_name',
         type: 'text',
-        label: 'Username',
-        placeholder: 'Enter Username',
+        label: 'Category',
+        placeholder: 'Enter Category',
         required: true,
         value: '',
         original: ''
     },
-    {
-        id: 'email',
-        type: 'email',
-        label: 'Email',
-        placeholder: 'Enter Email',
-        required: true,
-        value: '',
-        original: ''
-    },
-    {
-        id: 'status',
-        type: 'select',
-        label: 'Status',
-        options: [
-            { value: 'active', text: 'Active' },
-            { value: 'inactive', text: 'Inactive' }
-        ],
-        required: true,
-        value: '',
-        original: ''
-    }
   ]);
 
   onMounted(async () => {
-    const user = await getUser(userId.value);
+    const category = await useCategoriesStore().getCategory(categoryId.value);
     formFields.value.forEach(field => {
-        field.value = user.user[field.id];
-        field.original = user.user[field.id];
+        field.value = category.category[field.id];
+        field.original = category.category[field.id];
     });
   });
   
   const FormSubmit = (formData) => {
-    updateUser(formData)
+    useCategoriesStore().updateCategory(formData)
       .then(() => {
         successValidation();
       }).catch((error) => {
@@ -73,7 +52,7 @@
   };
   
   const successValidation = () => {
-    popupMessage.value = 'User updated successfully';
+    popupMessage.value = 'Category updated successfully';
     type.value = 'success';
     visible.value = true;
     setInterval(() => {

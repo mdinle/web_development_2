@@ -1,5 +1,5 @@
 import axios from "axios";
-import store from "./store"; 
+import { useAuthStore } from "./store/AuthStore";
 
 const axiosClient = axios.create({
     baseURL: 'http://localhost',
@@ -7,7 +7,7 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use(config => {
-    config.headers.Authorization = `Bearer ${store.state.user.token}`;
+    config.headers.Authorization = `Bearer ${useAuthStore().token}`;
     return config;
 });
 

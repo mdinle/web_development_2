@@ -12,6 +12,7 @@ import Table from '@/components/Manage/Table.vue';
 import addbutton from '@/components/Manage/addbutton.vue';
 import SuccessErrorPopup from '@/components/Manage/succeserrorpopup.vue';
 import UserServices from '@/service/UserServices';
+import router from '@/router';
 
 const error = ref(null);
 const { users, getUsers, deleteUser } = UserServices(error);
@@ -40,7 +41,7 @@ onMounted(async () => {
 });
 
 const editMethod = (id) => {
-    console.log('Edit', id);
+    router.push({ name: 'edit-user', params: { id: id } });
 };
 
 const deleteMethod = (id) => {
@@ -57,10 +58,10 @@ const successValidation = () => {
     popupMessage.value = 'User deleted successfully';
     type.value = 'success';
     visible.value = true;
-    setInterval(() => {
+    setTimeout(() => {
         visible.value = false;
-        location.reload()
-    }, 2000);
+        location.reload();
+    }, 3000);
 };
 
 const errorValidation = (message) => {

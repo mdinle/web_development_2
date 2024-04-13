@@ -1,15 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "../views/LoginView.vue";
-import RegisterView from "../views/RegisterView.vue";
-import AuthenticationVue from "../components/Authentication.vue";
+import { useAuthStore } from "@/store/AuthStore";
+
 import Dashboard from "../views/dashboard/DashboardView.vue";
 import StockHistory from "../views/dashboard/StockHistoryView.vue";
-
-import store from "../store";
-
-import UsersView from "../views/dashboard/UsersView.vue";
-import UsersHome from "../components/Users/Home.vue";
-import UsersCreate from "../components/Users/CreateUser.vue";
 
 import CategoriesView from "../views/dashboard/CategoriesView.vue";
 import CategoriesHome from "../components/Categories/Home.vue";
@@ -25,27 +18,12 @@ import ProductsHome from "@/components/Products/Home.vue";
 
 import StockView from "@/views/dashboard/StockView.vue";
 import StockHome from "@/components/Stock/Home.vue";
+import accountRoutes from "./account.routes";
+import usersRoutes from "./users.routes";
+import categoriesRoutes from "./categories.routes";
 
 const routes = [
-  {
-    path: "/authentication",
-    redirect: "/login",
-    name: "authentication",
-    component: AuthenticationVue,
-    meta: { isGuest: true },
-    children: [
-      {
-        path: "/login",
-        name: "login",
-        component: Login,
-      },
-      {
-        path: "/register",
-        name: "register",
-        component: RegisterView,
-      },
-    ],
-  },
+  {...accountRoutes},
 
   {
     path: "/",
@@ -54,41 +32,9 @@ const routes = [
     component: Dashboard,
   },
 
-  {
-    path: "/user",
-    redirect: "/users",
-    name: "user",
-    component: UsersView,
-    meta: { requiresAuth: true, breadcrumb: 'Users'},
-    children: [
-      {
-        path: "/users",
-        name: "users",
-        component: UsersHome,
-      },
-      {
-        path: "/users/create",
-        name: "create-user",
-        component: UsersCreate,
-        meta: { breadcrumb: 'Create User'},
-      }
-    ],
-  },
+  {...usersRoutes},
 
-  {
-    path: "/category",
-    redirect: "/categories",
-    name: "category",
-    component: CategoriesView,
-    meta: { requiresAuth: true, breadcrumb: 'Categories'},
-    children: [
-      {
-        path: "/categories",
-        name: "categories",
-        component: CategoriesHome,
-      },
-    ],
-  },
+  {...categoriesRoutes},
 
   {
     path: "/brand",
@@ -164,9 +110,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !store.state.user.token) {
+  if (to.meta.requiresAuth && !useAuthStore().token) {
     next({ name: "login" });
-  } else if (to.meta.isGuest && store.state.user.token) {
+  } else if (to.meta.isGuest && useAuthStore().token) {
     next({ name: "dashboard" });
   } else {
     next();
