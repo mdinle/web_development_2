@@ -1,6 +1,11 @@
-# 20240218-vue-pt
+# Web Development 2
+## Store Management System
 
-This template should help get you started developing with Vue 3 in Vite.
+## User Login
+
+* email - 700152@student.inholland.nl
+* password - Inholland
+
 
 ## Recommended IDE Setup
 
