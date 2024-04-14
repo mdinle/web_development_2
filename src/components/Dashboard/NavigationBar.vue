@@ -157,11 +157,11 @@
         <li class="px-5 hidden md:block">
           <div class="flex flex-row items-center mt-5 h-8">
             <div class="text-sm font-light tracking-wide text-gray-400 uppercase">
-              Settings
+              <!-- Settings -->
             </div>
           </div>
         </li>
-        <li>
+        <!-- <li>
           <a href="/dashboard/profile"
             class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
             <span class="inline-flex justify-center items-center ml-4">
@@ -189,7 +189,7 @@
             </span>
             <span class="ml-2 text-sm tracking-wide truncate">Settings</span>
           </a>
-        </li>
+        </li> -->
       </ul>
       <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs">
         Copyright @2021

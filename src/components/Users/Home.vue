@@ -11,17 +11,19 @@ import { computed, onMounted, ref } from 'vue';
 import Table from '@/components/Manage/Table.vue';
 import addbutton from '@/components/Manage/addbutton.vue';
 import SuccessErrorPopup from '@/components/Manage/succeserrorpopup.vue';
-import UserServices from '@/service/UserServices';
 import router from '@/router';
+import { useUsersStore } from '@/store/UsersStore';
+import { usePopupStore } from '@/store/PopupStore';
 
-const error = ref(null);
-const { users, getUsers, deleteUser } = UserServices(error);
-const visible = ref(false);
-const popupMessage = ref('');
-const type = ref('');
+const popupStore = usePopupStore();
+const usersStore = useUsersStore();
+
+const visible = computed(() => popupStore.showPopup);
+const popupMessage = computed(() => popupStore.popupMessage);
+const type = computed(() => popupStore.popupType);
 
 const data = computed(() =>{
-    return users.value.map((user) => {
+    return usersStore.users.map((user) => {
         return {
             id: user.id,
             username: user.username,
@@ -37,7 +39,11 @@ const data = computed(() =>{
 });
 
 onMounted(async () => {
-    await getUsers();
+    try {
+        await usersStore.fetchUsers();
+    } catch (error) {
+        console.error('Failed to fetch users:', error);
+    }
 });
 
 const editMethod = (id) => {
@@ -45,32 +51,6 @@ const editMethod = (id) => {
 };
 
 const deleteMethod = (id) => {
-    deleteUser(id)
-        .then(() => {
-            successValidation();
-        })
-        .catch((error) => {
-            errorValidation(error.response.data.error);
-        });
-};
-
-const successValidation = () => {
-    popupMessage.value = 'User deleted successfully';
-    type.value = 'success';
-    visible.value = true;
-    setTimeout(() => {
-        visible.value = false;
-        location.reload();
-    }, 3000);
-};
-
-const errorValidation = (message) => {
-    popupMessage.value = message;
-    type.value = 'error';
-    visible.value = true;
-    setInterval(() => {
-        visible.value = false;
-    }, 3000);
 };
 
 </script>

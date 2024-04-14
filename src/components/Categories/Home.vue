@@ -10,18 +10,20 @@
 import { onMounted, computed, ref } from 'vue';
 import Table from '@/components/Manage/Table.vue';
 import addbutton from '@/components/Manage/addbutton.vue';
-import CategoriesService from '@/service/CategoriesServices';
 import SuccessErrorPopup from '@/components/Manage/succeserrorpopup.vue';
+import { usePopupStore } from '@/store/PopupStore';
+import { useCategoriesStore } from '@/store/CategoriesStore';
 import router from '@/router';
 
-const error = ref(null);
-const popupMessage = ref('');
-const type = ref('');
-const visible = ref(false);
-const { categories, getCategories } = CategoriesService(error);
+const popupStore = usePopupStore();
+const categoryStore = useCategoriesStore();
+
+const popupMessage = computed(() => popupStore.popupMessage);
+const type = computed(() => popupStore.popupType);
+const visible = computed(() => popupStore.showPopup);
 
 const data = computed(() => {
-    return categories.value.map((category) => {
+    return categoryStore.categories.map((category) => {
         return {
             id: category.category_id,
             name: category.category_name,
@@ -34,7 +36,11 @@ const data = computed(() => {
 });
 
 onMounted(async () => {
-    await getCategories();
+    try {
+        await useCategoriesStore().fetchCategories();
+    } catch (error) {
+        console.error('Failed to fetch categories:', error);
+    }
 });
 
 const editMethod = (id) => {
@@ -42,32 +48,20 @@ const editMethod = (id) => {
 };
 
 const deleteMethod = async (id) => {
-    await CategoriesService().deleteCategory(id)
+    categoryStore.deleteCategory(id)
         .then(() => {
-            successValidation();
+            const message = 'Category deleted successfully';
+            popupStore.successPopup(message);
         })
         .catch((error) => {
-            errorValidation(error.response.data.error);
+            console.error('Failed to delete category:', error);
+            const message = 'Failed to delete category';
+            popupStore.errorPopup(message);
         });
 };
 
-const successValidation = () => {
-    popupMessage.value = 'User deleted successfully';
-    type.value = 'success';
-    visible.value = true;
-    setTimeout(() => {
-        visible.value = false;
-        location.reload();
-    }, 3000);
-};
-
-const errorValidation = (message) => {
-    popupMessage.value = message;
-    type.value = 'error';
-    visible.value = true;
-    setInterval(() => {
-        visible.value = false;
-    }, 3000);
+const closeBanner = () => {
+    popupStore.closePopup();
 };
 
 </script>

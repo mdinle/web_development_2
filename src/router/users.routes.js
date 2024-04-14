@@ -1,7 +1,6 @@
 import UsersView from "@/views/dashboard/UsersView.vue";
 import UsersHome from "@/components/Users/Home.vue";
-import UsersCreate from "@/components/Users/CreateUser.vue";
-import EditUser from "@/components/Users/EditUser.vue";
+import AddEditUsers from "@/components/Users/AddEditUsers.vue";
 
 export default {
     path: "/user",
@@ -18,13 +17,13 @@ export default {
       {
         path: "/users/create",
         name: "create-user",
-        component: UsersCreate,
+        component: AddEditUsers,
         meta: { breadcrumb: 'Create User'},
       },
       {
         path: "/users/edit/:id",
         name: "edit-user",
-        component: EditUser,
+        component: AddEditUsers,
         meta: { breadcrumb: 'Edit User'},
       }
     ],

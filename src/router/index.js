@@ -4,23 +4,15 @@ import { useAuthStore } from "@/store/AuthStore";
 import Dashboard from "../views/dashboard/DashboardView.vue";
 import StockHistory from "../views/dashboard/StockHistoryView.vue";
 
-import CategoriesView from "../views/dashboard/CategoriesView.vue";
-import CategoriesHome from "../components/Categories/Home.vue";
-
-import BrandsView from "../views/dashboard/BrandsView.vue";
-import BrandsHome from "../components/Brands/Home.vue";
-
-import SizesView from "../views/dashboard/SizesView.vue";
-import SizesHome from "../components/Sizes/Home.vue";
-
-import ProductsView from "@/views/dashboard/ProductsView.vue";
-import ProductsHome from "@/components/Products/Home.vue";
-
 import StockView from "@/views/dashboard/StockView.vue";
 import StockHome from "@/components/Stock/Home.vue";
+
 import accountRoutes from "./account.routes";
 import usersRoutes from "./users.routes";
 import categoriesRoutes from "./categories.routes";
+import brandsRouter from "./brands.router";
+import sizesRouter from "./sizes.router";
+import productsRoutes from "./products.routes";
 
 const routes = [
   {...accountRoutes},
@@ -36,50 +28,11 @@ const routes = [
 
   {...categoriesRoutes},
 
-  {
-    path: "/brand",
-    redirect: "/brands",
-    name: "brand",
-    component: BrandsView,
-    meta: { requiresAuth: true, breadcrumb: 'Brands'},
-    children: [
-      {
-        path: "/brands",
-        name: "brands",
-        component: BrandsHome,
-      },
-    ],
-  },
+  {...brandsRouter},
 
-  {
-    path: "/size",
-    redirect: "/sizes",
-    name: "size",
-    component: SizesView,
-    meta: { requiresAuth: true, breadcrumb: 'Sizes'},
-    children: [
-      {
-        path: "/sizes",
-        name: "sizes",
-        component: SizesHome,
-      },
-    ],
-  },
+  {...sizesRouter},
 
-  {
-    path: "/product",
-    redirect: "/products",
-    name: "product",
-    component: ProductsView,
-    meta: { requiresAuth: true, breadcrumb: 'Products'},
-    children: [
-      {
-        path: "/products",
-        name: "products",
-        component: ProductsHome,
-      },
-    ],
-  },
+  {...productsRoutes},
 
   {
     path: "/stock",

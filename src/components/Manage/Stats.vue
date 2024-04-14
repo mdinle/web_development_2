@@ -14,38 +14,34 @@
       </div>
     </div>
 
-    <div class="relative p-6 rounded-2xl bg-white shadow ">
+    <div class="relative p-6 rounded-2xl bg-yellow-500 shadow ">
       <div class="space-y-2">
-        <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray-500">
-          <span>New customers</span>
-        </div>
-
-        <div class="text-3xl">1340</div>
-
-        <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red-600">
-          <span>3% decrease</span>
-
-          <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-            aria-hidden="true">
-            <path fill-rule="evenodd"
-              d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
-              clip-rule="evenodd"></path>
+        <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" />
           </svg>
+
+          <span>Stock Total</span>
         </div>
+
+        <div class="text-3xl text-white">{{ totalStock }}</div>
       </div>
     </div>
 
     <div class="relative p-6 rounded-2xl bg-red-500 shadow">
       <div class="space-y-2">
         <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
-</svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
+          </svg>
 
           <span>Low On Stock</span>
         </div>
 
-        <div class="text-3xl text-white">{{ productBrand }} {{ productName }} Size: {{productSize}} </div>
+        <div class="text-3xl text-white">{{ productBrand }} {{ productName }} Size: {{ productSize }} </div>
 
         <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-white">
           <span>{{ productStock }} left</span>
@@ -69,14 +65,16 @@ const productBrand = ref(null);
 const productName = ref(null);
 const productStock = ref(null);
 const productSize = ref(null);
+const totalStock = ref(null);
 
 
 onMounted(async () => {
   await usersStore.fetchUsers();
-  await productsStore.fetchProducts();
+  await productsStore.fetchDetailedProducts();
 
   activeUsers.value = usersStore.getActiveUsers;
   lowestStock.value = productsStore.getLowestStock;
+  totalStock.value = productsStore.getTotalStock;
 
   productBrand.value = lowestStock.value.brand.brand_name;
   productName.value = lowestStock.value.name;

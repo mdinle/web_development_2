@@ -10,7 +10,7 @@
                 <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
                 <Stats />
                 <Table title="" innerTitle="Latest Products"
-                    :headers="[{ name: 'Id', key: 'id' }, { name: 'Brand', key: 'brand' }, { name: 'Product name', key: 'name' }, { name: 'Category', key: 'category' }, {name: 'Size', key: 'size'}, { name: 'Price', key: 'price' }, { name: 'Stock', key: 'stock' }, { name: 'Action', key: 'action' }]"
+                    :headers="[{ name: 'Id', key: 'id' }, { name: 'Brand', key: 'brand' }, { name: 'Product name', key: 'name' }, { name: 'Category', key: 'category' }, { name: 'Price', key: 'price' }, { name: 'Size', key: 'size' }]"
                     :data="data" />
 
             </div>
@@ -25,6 +25,7 @@ import NavigationBar from '@/components/Dashboard/NavigationBar.vue';
 import breadcrumb from '@/components/Manage/breadcrumb.vue';
 import { onMounted, ref, computed } from 'vue';
 import { useProductsStore } from '@/store/ProductsStore';
+import router from '@/router';
 
 const useProducts = useProductsStore();
 
@@ -37,20 +38,18 @@ const data = computed(() =>{
             brand: latestProduct.brand.brand_name,
             name: latestProduct.name,
             category: latestProduct.category.category_name,
-            size: latestProduct.size.size_name,
             price: latestProduct.price,
-            stock: latestProduct.stock,
-            actions: [
-            { label: 'Show', classes: 'px-4 py-2 font-medium text-white bg-green-600 rounded-md hover:bg-green-500 focus:outline-none focus:shadow-outline-blue active:bg-green-600 transition duration-150 ease-in-out', onClick: () => showMethod(product.id)},
-                { label: 'Edit', classes: 'ml-2 px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out', onClick: () => editMethod(product.id) },
-                { label: 'Delete', classes: 'ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out', onClick: () => deleteMethod(product.id) }
-            ]
+            size: latestProduct.size.size_name,
         }
     })
 });
 
 onMounted(async () => {
-    await useProducts.fetchProducts();
+    await useProducts.fetchDetailedProducts();
     latestProducts.value = useProducts.getLatestProducts;
 });
+
+const showMethod = (id) => {
+    router.push({ name: 'product-details', params: { id } });
+};
 </script>

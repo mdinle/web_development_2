@@ -15,7 +15,10 @@ export const useProductsStore = defineStore('ProductsStore', {
         },
         getLatestProducts() {
             return this.products.sort((a, b) => new Date(b.created_at.date) - new Date(a.created_at.date)).slice(0, 5);
-        }
+        },
+        getTotalStock() {
+            return this.products.reduce((acc, product) => acc + product.stock, 0);
+        },
     },
     actions: {
         async fetchProducts() {
@@ -29,6 +32,23 @@ export const useProductsStore = defineStore('ProductsStore', {
         async getProduct(id) {
             try {
                 const response = await axiosClient.get(`/product?productId=${id}`);
+                return response.data;
+            } catch (error) {
+                throw error;
+            }
+        },
+        async fetchDetailedProducts() {
+            try {
+                const response = await axiosClient.get('/detailed-products');
+                this.products = response.data;
+                return response.data;
+            } catch (error) {
+                this.error = error.message;
+            }
+        },
+        async fetchDetailedProduct(id) {
+            try {
+                const response = await axiosClient.get(`/detailed-product?productId=${id}`);
                 return response.data;
             } catch (error) {
                 throw error;
